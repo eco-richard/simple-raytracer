@@ -1,0 +1,6 @@
+#ifndef SIMPLE_RAYTRACER_SPHERE_H
+#define SIMPLE_RAYTRACER_SPHERE_H
+
+class Sphere;
+
+#endif // SIMPLE_RAYTRACER_SPHERE_H

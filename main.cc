@@ -2,7 +2,7 @@
 #include "R3Vector.h"
 #include "Ray.h"
 
-bool hit_sphere(const R3Vector& center, double radius, const Ray& r) {
+double hit_sphere(const R3Vector& center, double radius, const Ray& r) {
   R3Vector oc = r.origin() - center;
   double a = dot(r.direction(), r.direction());
   double b = 2.0 * dot(oc, r.direction());
@@ -10,21 +10,26 @@ bool hit_sphere(const R3Vector& center, double radius, const Ray& r) {
 
   double discriminant = b * b - 4 * a * c;
 
-  return (discriminant > 0);
+  if (discriminant < 0) {
+    return -1.0;
+  }
+  return (-b - sqrt(discriminant)) / (2.0 * a);
 }
 
 R3Vector color(const Ray& r) {
-  if (hit_sphere(R3Vector(0, 0, -1), 0.5, r)) {
-    return R3Vector(1, 0, 0);
+  double t = hit_sphere(R3Vector(0, 0, -1), 0.5, r);
+  if (t > 0.0) {
+    R3Vector normal = unit_vector(r.point_at_t(t) - R3Vector(0, 0, -1));
+    return R3Vector(normal.x() + 1, normal.y() + 1, normal.z() + 1) * 0.5;
   }
   R3Vector unit_direction = unit_vector(r.direction());
-  double t = 0.5 * (unit_direction.y() + 1.0);
+  t = 0.5 * (unit_direction.y() + 1.0);
   return R3Vector(1.0, 1.0, 1.0) * (1.0 - t) + R3Vector(0.5, 0.7, 1.0) * t;
 }
 
 int main() {
-  int nx = 600;
-  int ny = 300;
+  int nx = 1200;
+  int ny = 600;
 
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
