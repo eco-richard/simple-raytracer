@@ -2,10 +2,11 @@ CXX=g++
 CXXFLAGS=-Wall -g --std=c++20
 
 BIN=./bin
+HDRS=*.h
 
 all: main make-ppm
 
-main: main.cc R3Vector.h Ray.h
+main: main.cc $(HDRS)
 	$(CXX) $(CXXFLAGS) main.cc -o $(BIN)/main 
 
 make-ppm: $(BIN)/main
