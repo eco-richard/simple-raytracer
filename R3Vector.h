@@ -5,8 +5,8 @@
 
 class R3Vector {
   public:
-    R3Vector();
-    R3Vector(double e1, double e2, double e3);
+    R3Vector() noexcept;
+    R3Vector(double e1, double e2, double e3) noexcept;
 
     double x();
     double y();
@@ -16,10 +16,16 @@ class R3Vector {
     double g();
     double b();
 
-    R3Vector& operator+(const R3Vector& v) const;
     R3Vector operator-() const;
     double operator[](int i) const;
     double& operator[](int i);
+
+    R3Vector operator+(const R3Vector& v);
+    R3Vector operator-(const R3Vector& v);
+    R3Vector operator*(const R3Vector& v);
+    R3Vector operator/(const R3Vector& v);
+    R3Vector operator*(const double t);
+    R3Vector operator/(const double t);
 
     R3Vector& operator+=(const R3Vector& v);
     R3Vector& operator-=(const R3Vector& v);

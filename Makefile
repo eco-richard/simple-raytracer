@@ -5,8 +5,8 @@ BIN=./bin
 
 all: main make-ppm
 
-main: main.cc
-	$(CXX) $(CXXFLAGS) main.cc -o $(BIN)/main
+main: main.cc R3Vector.o
+	$(CXX) $(CXXFLAGS) main.cc -o $(BIN)/main R3Vector.o
 
 make-ppm: $(BIN)/main
 	$(BIN)/main >> main.ppm
