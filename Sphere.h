@@ -7,7 +7,7 @@
 
 class Sphere : public Hitable {
   public:
-    Sphere() = default;
+    Sphere() {};
 
     Sphere(R3Vector c, double r) : center(c), radius(r) {}
 
@@ -25,10 +25,10 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
   double b = dot(oc, r.direction());
   double c = dot(oc, oc) - radius * radius;
 
-  double discriminant = b*b - 4 * a * c;
+  double discriminant = b*b - a*c;
 
   if (discriminant > 0) {
-    double tmp = (-b - std::sqrt(b*b - a*c) / a);
+    double tmp = (-b - std::sqrt(b*b - a*c)) / a;
 
     if (tmp < t_max && tmp > t_min) {
       rec.t = tmp;
@@ -45,8 +45,7 @@ bool Sphere::hit(const Ray &r, double t_min, double t_max, hit_record &rec) cons
       rec.normal = (rec.p - center) / radius;
       return true;
     }
-
-    return false;
   }
+  return false;
 }
 #endif // SIMPLE_RAYTRACER_SPHERE_H

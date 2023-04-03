@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "Hitable.h"
 #include "HitableList.h"
+#include "Camera.h"
 
 R3Vector color(const Ray&r, Hitable* world) {
   hit_record record;
@@ -22,15 +23,11 @@ R3Vector color(const Ray&r, Hitable* world) {
 }
 
 int main() {
-  int nx = 1200;
-  int ny = 600;
+  int nx = 400;
+  int ny = 200;
+  int ns = 100;
 
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
-
-  R3Vector lower_left_corner(-2.0, -1.0, -1.0);
-  R3Vector horizontal(4.0, 0.0, 0.0);
-  R3Vector vertical(0.0, 2.0, 0.0);
-  R3Vector origin(0.0, 0.0, 0.0);
 
   Hitable* list[2];
   list[0] = new Sphere(R3Vector(0, 0, -1), 0.5);
@@ -38,15 +35,20 @@ int main() {
 
   Hitable* world = new HitableList(list, 2);
 
+  Camera cam;
+
   for (int i = ny - 1; i >= 0; i--) {
     for (int j = 0; j < nx; j++) {
-      double u = double(j) / double(nx);
-      double v = double(i) / double(ny);
+      R3Vector colors(0, 0, 0);
+      for (int s = 0; s < ns; s++) {
+        double u = double(j + drand48()) / double(nx);
+        double v = double(i + drand48()) / double(ny);
 
-      Ray ray(origin, lower_left_corner + horizontal * u + vertical * v);
-
-      R3Vector point = ray.point_at_t(2.0);
-      R3Vector colors = color(ray, world);
+        Ray r = cam.get_ray(u, v);
+        // R3Vector point = r.point_at_t(2.0);
+        colors += color(r, world);
+      }
+      colors /= float(ns);
 
       int r = int(255.99 * colors[0]);
       int g = int(255.99 * colors[1]);

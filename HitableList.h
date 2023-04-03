@@ -6,7 +6,7 @@
 
 class HitableList : public Hitable {
   public:
-    HitableList() = default;
+    HitableList() {};
 
     HitableList(Hitable **l, int size) : list(l), list_size(size) {}
 
@@ -24,7 +24,7 @@ bool HitableList::hit(const Ray &r, double t_min, double t_max, hit_record &rec)
 
   double closest_so_far = t_max;
   for (int i = 0; i < list_size; i++) {
-    if (list[i]->hit(r, t_min, t_max, tmp_record)) {
+    if (list[i]->hit(r, t_min, closest_so_far, tmp_record)) {
       hit_anything = true;
       closest_so_far = tmp_record.t;
       rec = tmp_record;
